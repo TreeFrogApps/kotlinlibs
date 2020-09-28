@@ -1,2 +1,2 @@
 # kotlinlibs
-Collection of kotlin and koltin jvm libraires
+Collection of kotlin and kotlin jvm libraires
