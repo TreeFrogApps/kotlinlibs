@@ -1,2 +1,2 @@
 rootProject.name = "kotlinlibs"
-include("core")
+include("core", "coroutines")
