@@ -1,3 +1,4 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -61,5 +62,9 @@ subprojects {
     tasks.withType<JavaCompile> {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
+    }
+
+    tasks.withType<Test> {
+        testLogging { events = mutableSetOf(PASSED, SKIPPED, FAILED) }
     }
 }

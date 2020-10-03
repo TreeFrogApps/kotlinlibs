@@ -24,7 +24,7 @@ class FlowTestObserver<T>(scope: CoroutineScope, flow: Flow<T>) {
 
     val first: T? get() = values.firstOrNull()
     val second: T? get() = values.elementAtOrNull(1)
-    val third: T? get() = values.elementAtOrNull(1)
+    val third: T? get() = values.elementAtOrNull(2)
 
     fun assertValueCount(count: Int) {
         if (values.size != count) throw AssertionError("Values count mismatch expected $count, was ${values.size}")

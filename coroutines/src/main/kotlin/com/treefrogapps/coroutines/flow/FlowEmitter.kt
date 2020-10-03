@@ -3,12 +3,19 @@ package com.treefrogapps.coroutines.flow
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.channels.ProducerScope
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.channelFlow
 
 @ExperimentalCoroutinesApi
-internal class FlowEmitter<T> constructor(private val block: ProducerScope<T>.() -> Unit) : Flow<T> {
+class FlowEmitter<T> private constructor(private val block: ProducerScope<T>.() -> Unit) : Flow<T> {
 
-    private val wrapped: Flow<T> = channelFlow { block(this)  }
+    companion object {
+        @ExperimentalCoroutinesApi
+        fun <T> create(block: ProducerScope<T>.() -> Unit): Flow<T> = FlowEmitter(block)
+    }
+
+    private val wrapped: Flow<T> = channelFlow { block(this) }
 
     @InternalCoroutinesApi
     override suspend fun collect(collector: FlowCollector<T>) {
@@ -16,5 +23,3 @@ internal class FlowEmitter<T> constructor(private val block: ProducerScope<T>.()
     }
 }
 
-@ExperimentalCoroutinesApi
-fun <T> emitter(block: ProducerScope<T>.() -> Unit) : Flow<T> = FlowEmitter(block)
