@@ -22,7 +22,6 @@ subprojects {
 
     repositories {
         mavenCentral()
-        mavenLocal()
         jcenter()
         maven {
             name = "GitHubPackages"
