@@ -8,11 +8,11 @@ import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.channelFlow
 
 @ExperimentalCoroutinesApi
-class FlowEmitter<T> private constructor(private val block: ProducerScope<T>.() -> Unit) : Flow<T> {
+class FlowEmitter<T> private constructor(private val block: suspend ProducerScope<T>.() -> Unit) : Flow<T> {
 
     companion object {
         @ExperimentalCoroutinesApi
-        fun <T> create(block: ProducerScope<T>.() -> Unit): Flow<T> = FlowEmitter(block)
+        fun <T> create(block: suspend ProducerScope<T>.() -> Unit): Flow<T> = FlowEmitter(block)
     }
 
     private val wrapped: Flow<T> = channelFlow { block(this) }

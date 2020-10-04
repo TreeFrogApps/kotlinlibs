@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.*
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-internal abstract class FlowProcessor<E>(val broadcastChannel: BroadcastChannel<E>) {
+internal abstract class FlowProcessor<E>(private val broadcastChannel: BroadcastChannel<E>) {
 
     fun onNext(t: E): Boolean = broadcastChannel.offer(t)
 
