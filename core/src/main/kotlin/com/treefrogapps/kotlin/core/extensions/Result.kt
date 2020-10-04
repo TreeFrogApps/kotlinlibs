@@ -1,4 +1,4 @@
-package com.treefrogapps.core.extensions
+package com.treefrogapps.kotlin.core.extensions
 
 class Result<out T> private constructor(private val value: T? = null, private val throwable: Throwable? = null) {
 

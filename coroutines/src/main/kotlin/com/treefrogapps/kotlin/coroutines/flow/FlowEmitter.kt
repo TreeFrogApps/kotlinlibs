@@ -1,4 +1,4 @@
-package com.treefrogapps.coroutines.flow
+package com.treefrogapps.kotlin.coroutines.flow
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi

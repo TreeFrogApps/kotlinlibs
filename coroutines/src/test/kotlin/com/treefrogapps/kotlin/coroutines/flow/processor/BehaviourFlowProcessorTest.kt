@@ -1,7 +1,7 @@
-package com.treefrogapps.coroutines.flow.processor
+package com.treefrogapps.kotlin.coroutines.flow.processor
 
-import com.treefrogapps.coroutines.flow.FlowTestObserver
-import com.treefrogapps.coroutines.flow.FlowTestObserver.Companion.test
+import com.treefrogapps.kotlin.coroutines.flow.FlowTestObserver
+import com.treefrogapps.kotlin.coroutines.flow.FlowTestObserver.Companion.test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.test.runBlockingTest

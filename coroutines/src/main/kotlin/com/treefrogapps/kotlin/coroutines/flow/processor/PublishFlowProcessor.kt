@@ -1,4 +1,4 @@
-package com.treefrogapps.coroutines.flow.processor
+package com.treefrogapps.kotlin.coroutines.flow.processor
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview

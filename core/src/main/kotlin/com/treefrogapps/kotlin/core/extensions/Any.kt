@@ -1,4 +1,4 @@
-package com.treefrogapps.core.extensions
+package com.treefrogapps.kotlin.core.extensions
 
 inline fun <T> T?.ifNull(func: () -> Unit) {
     if (this == null) func()

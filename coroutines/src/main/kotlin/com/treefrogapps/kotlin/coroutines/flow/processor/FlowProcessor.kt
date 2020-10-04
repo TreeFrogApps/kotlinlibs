@@ -1,7 +1,6 @@
-package com.treefrogapps.coroutines.flow.processor
+package com.treefrogapps.kotlin.coroutines.flow.processor
 
-import com.treefrogapps.coroutines.flow.FlowEmitter
-import com.treefrogapps.coroutines.flow.FlowEmitter.Companion.create
+import com.treefrogapps.kotlin.coroutines.flow.FlowEmitter.Companion.create
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel

@@ -1,6 +1,6 @@
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
-group = "com.treefrogapps.core"
+group = "com.treefrogapps.kotlin.core"
 project.extra["name"] = "core"
 version = "1.0.0"
 

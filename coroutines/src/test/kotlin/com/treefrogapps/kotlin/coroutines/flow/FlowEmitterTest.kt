@@ -1,8 +1,8 @@
-package com.treefrogapps.coroutines.flow
+package com.treefrogapps.kotlin.coroutines.flow
 
-import com.treefrogapps.coroutines.flow.FlowTestObserver.Companion.test
-import com.treefrogapps.coroutines.flow.processor.FlowProcessor
-import com.treefrogapps.coroutines.flow.processor.PublishFlowProcessor
+import com.treefrogapps.kotlin.coroutines.flow.FlowTestObserver.Companion.test
+import com.treefrogapps.kotlin.coroutines.flow.processor.FlowProcessor
+import com.treefrogapps.kotlin.coroutines.flow.processor.PublishFlowProcessor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow

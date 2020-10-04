@@ -1,6 +1,6 @@
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
-group = "com.treefrogapps.coroutines"
+group = "com.treefrogapps.kotlin.coroutines"
 project.extra["name"] = "coroutines"
 version = "1.0.0"
 
