@@ -1,10 +1,13 @@
 package com.treefrogapps.kotlin.coroutines.flow.processor
 
 import com.treefrogapps.kotlin.coroutines.flow.FlowEmitter.Companion.create
+import com.treefrogapps.kotlin.coroutines.flow.subscribe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -40,11 +43,7 @@ internal abstract class FlowProcessor<E>(private val broadcastChannel: Broadcast
     }
 
     fun asFlowEmitter(): Flow<E> = create {
-        asFlow()
-            .onEach(this::send)
-            .onCompletion { close() }
-            .catch { close(it) }
-            .launchIn(this)
-            .run { invokeOnClose { cancel() } }
+        asFlow().subscribe(emitterScope = this)
+            .run { setCancellable { cancel() } }
     }
 }

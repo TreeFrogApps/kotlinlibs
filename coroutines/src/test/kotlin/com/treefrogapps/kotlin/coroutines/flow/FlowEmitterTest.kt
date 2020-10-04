@@ -70,7 +70,7 @@ class FlowEmitterTest {
 
     @Test fun `given encapsulated emitter when cancelled then invokeOnClose called`() = runBlockingTest {
         var closed = false
-        emitter = FlowEmitter.create { invokeOnClose { closed = true } }
+        emitter = FlowEmitter.create { setCancellable{ closed = true } }
 
         emitter.test(this)
             .apply { finish() }
@@ -88,8 +88,8 @@ class FlowEmitterTest {
 
     @Test fun `given encapsulated emitter when values produced then emissions observed`() = runBlockingTest {
         emitter = FlowEmitter.create {
-            offer(1)
-            offer(2)
+            onNext(1)
+            onNext(2)
         }
 
         emitter.test(this)
