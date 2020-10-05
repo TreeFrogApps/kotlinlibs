@@ -5,11 +5,13 @@ import com.treefrogapps.kotlin.coroutines.flow.FlowTestObserver.Companion.test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.ClosedSendChannelException
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import kotlin.coroutines.EmptyCoroutineContext
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -22,7 +24,9 @@ class PublishFlowProcessorTest {
     }
 
     @After fun tearDown() {
-        processor.onComplete()
+        runBlocking(EmptyCoroutineContext) {
+            processor.onComplete()
+        }
     }
 
     @Test fun `given publisher with single observer when value published then emission observed`() = runBlockingTest {

@@ -25,6 +25,28 @@ class FlowEmitterTest {
         emitter = producer.asFlowEmitter()
     }
 
+    @Test fun name() = runBlockingTest {
+        FlowEmitter.create<Int>({
+                                    (0 until 1_000).forEach { onNext(it) }
+                                    onComplete()
+                                    setCancellable { println("Cancelled") }
+                                }, FlowBackpressure.BUFFER)
+            .subscribe(this, object : FlowObserver<Int> {
+                override suspend fun onNext(t: Int) {
+                    println("Mark next : $t")
+                }
+
+                override suspend fun onError(e: Throwable) {
+                    println(e)
+                }
+
+                override suspend fun onComplete() {
+                    println("Completed")
+                }
+
+            })
+    }
+
     @Test fun `given emitter subscribed when value published then emission observed`() = runBlockingTest {
         val testObserver: FlowTestObserver<Int> = emitter.test(this)
 
@@ -70,7 +92,7 @@ class FlowEmitterTest {
 
     @Test fun `given encapsulated emitter when cancelled then invokeOnClose called`() = runBlockingTest {
         var closed = false
-        emitter = FlowEmitter.create { setCancellable{ closed = true } }
+        emitter = FlowEmitter.create ({ setCancellable { closed = true } })
 
         emitter.test(this)
             .apply { finish() }
@@ -81,16 +103,16 @@ class FlowEmitterTest {
     }
 
     @Test fun `given encapsulated emitter when error then error propagated to collector`() = runBlockingTest {
-        emitter = FlowEmitter.create { throw IllegalStateException() }
+        emitter = FlowEmitter.create ({ throw IllegalStateException() })
 
         emitter.test(this).assertError<IllegalStateException>()
     }
 
     @Test fun `given encapsulated emitter when values produced then emissions observed`() = runBlockingTest {
-        emitter = FlowEmitter.create {
+        emitter = FlowEmitter.create ({
             onNext(1)
             onNext(2)
-        }
+        })
 
         emitter.test(this)
             .assert {
@@ -101,7 +123,7 @@ class FlowEmitterTest {
     }
 
     @Test(expected = IllegalStateException::class) fun `given encapsulated emitter when error and no error handling then error thrown`() = runBlockingTest {
-        FlowEmitter.create<Int> { throw IllegalStateException() }
+        FlowEmitter.create<Int> ({ throw IllegalStateException() })
             .launchIn(this)
     }
 }

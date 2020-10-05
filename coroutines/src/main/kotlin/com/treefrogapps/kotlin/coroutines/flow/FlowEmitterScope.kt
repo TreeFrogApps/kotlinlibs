@@ -7,12 +7,14 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlin.coroutines.CoroutineContext
 
 @ExperimentalCoroutinesApi
-class FlowEmitterScope<T> constructor(private val producerScope: ProducerScope<T>) : FlowObserver<T>, CoroutineScope {
+class FlowEmitterScope<T> constructor(private val producerScope: ProducerScope<T>,
+                                      private val producer: FlowProducer<T>) : FlowObserver<T>, CoroutineScope {
+
 
     override val coroutineContext: CoroutineContext = producerScope.coroutineContext
 
-    override fun onNext(t: T) {
-        producerScope.offer(t)
+    override suspend fun onNext(t: T) {
+        producer.produce(producerScope, t)
     }
 
     override suspend fun onError(e: Throwable) {

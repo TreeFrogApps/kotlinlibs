@@ -4,11 +4,13 @@ import com.treefrogapps.kotlin.coroutines.flow.FlowTestObserver
 import com.treefrogapps.kotlin.coroutines.flow.FlowTestObserver.Companion.test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import kotlin.coroutines.EmptyCoroutineContext
 
 /**
  * [BehaviourFlowProcessor] specific tests (replay 1 behaviour).
@@ -25,9 +27,10 @@ class BehaviourFlowProcessorTest {
     }
 
     @After fun tearDown() {
-        processor.onComplete()
+        runBlocking(EmptyCoroutineContext) {
+            processor.onComplete()
+        }
     }
-
 
     @Test fun `given publisher emission and before any observers subscribed when multiple new observers then previous emission observed`() = runBlockingTest {
         processor.onNext(1)

@@ -33,10 +33,10 @@ fun <T> Flow<T>.doAfterEach(action: (t: T) -> Unit): Flow<T> = flow {
 
 @ExperimentalCoroutinesApi
 fun <T> Flow<T>.subscribe(scope: CoroutineScope,
-                          each: suspend (t: T) -> Unit,
+                          next: suspend (t: T) -> Unit,
                           error: (Throwable) -> Unit = {},
                           complete: suspend () -> Unit = {}): Job =
-        onEach(each::invoke)
+        onEach(next::invoke)
             .onCompletion { complete() }
             .catch { error(it) }
             .launchIn(scope)
@@ -49,7 +49,7 @@ fun <T> Flow<T>.subscribe(scope: CoroutineScope, observer: FlowObserver<T>): Job
             .launchIn(scope)
 
 @ExperimentalCoroutinesApi
-fun <T> Flow<T>.subscribe(emitterScope: FlowEmitterScope<T>): Job =
+internal fun <T> Flow<T>.subscribe(emitterScope: FlowEmitterScope<T>): Job =
         onEach(emitterScope::onNext)
             .onCompletion { emitterScope.onComplete() }
             .catch { emitterScope.onError(it) }

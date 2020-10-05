@@ -1,6 +1,8 @@
 package com.treefrogapps.kotlin.coroutines.flow.processor
 
 import com.treefrogapps.kotlin.coroutines.flow.FlowEmitter.Companion.create
+import com.treefrogapps.kotlin.coroutines.flow.FlowObserver
+import com.treefrogapps.kotlin.coroutines.flow.FlowProducer
 import com.treefrogapps.kotlin.coroutines.flow.subscribe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -11,13 +13,18 @@ import kotlinx.coroutines.flow.flow
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-internal abstract class FlowProcessor<E>(private val broadcastChannel: BroadcastChannel<E>) {
+internal abstract class FlowProcessor<T>(private val broadcastChannel: BroadcastChannel<T>,
+                                         private val producer: FlowProducer<T>) : FlowObserver<T> {
 
-    fun onNext(t: E): Boolean = broadcastChannel.offer(t)
+    override suspend fun onNext(t: T) = producer.produce(broadcastChannel, t)
 
-    fun <T : Throwable> onError(e: T): Boolean = broadcastChannel.close(e)
+    override suspend fun onError(e: Throwable) {
+        broadcastChannel.close(e)
+    }
 
-    fun onComplete(): Boolean = broadcastChannel.close()
+    override suspend fun onComplete() {
+        broadcastChannel.close()
+    }
 
     /**
      * Create a [Flow] and open the subscription to the [BroadcastChannel]
@@ -35,15 +42,13 @@ internal abstract class FlowProcessor<E>(private val broadcastChannel: Broadcast
      * and preventing a memory leak.
      *
      */
-    fun asFlow(): Flow<E> = flow {
+    fun asFlow(): Flow<T> = flow {
         broadcastChannel.openSubscription().run {
             emitAll(this)
             if (!isClosedForReceive) cancel()
         }
     }
 
-    fun asFlowEmitter(): Flow<E> = create {
-        asFlow().subscribe(emitterScope = this)
-            .run { setCancellable { cancel() } }
-    }
+    fun asFlowEmitter(): Flow<T> =
+            create({ asFlow().subscribe(emitterScope = this).run { setCancellable { cancel() } } })
 }
