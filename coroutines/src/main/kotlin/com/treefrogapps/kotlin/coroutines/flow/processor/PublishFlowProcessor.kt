@@ -8,6 +8,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel
 
+/**
+ * Publish Processor that publishes values to any subscribers
+ */
 @FlowPreview
 @ExperimentalCoroutinesApi
 internal class PublishFlowProcessor<T>(producer: FlowProducer<T>) : FlowProcessor<T>(BroadcastChannel<T>(1), producer) {

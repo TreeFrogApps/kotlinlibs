@@ -8,11 +8,22 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.channelFlow
 
+/**
+ * Flow emitter that allows for bridging between traditional callback interfaces to
+ * produce values in the [FlowEmitterScope]
+ *
+ * @param block producer block which has a [FlowEmitterScope.setCancellable] block for cleanup of dependencies
+ * @param backpressure back pressure strategy
+ */
 @ExperimentalCoroutinesApi
 class FlowEmitter<T> private constructor(private val block: suspend FlowEmitterScope<T>.() -> Unit,
                                          private val backpressure: FlowBackpressure) : Flow<T> {
 
     companion object {
+
+        /**
+         * Factory ethod
+         */
         @ExperimentalCoroutinesApi
         fun <T> create(block: suspend FlowEmitterScope<T>.() -> Unit, backpressure: FlowBackpressure = BUFFER): Flow<T> = FlowEmitter(block, backpressure)
     }

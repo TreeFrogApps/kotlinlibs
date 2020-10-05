@@ -7,8 +7,10 @@ import com.treefrogapps.kotlin.coroutines.flow.FlowProducerFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import sun.java2d.BackBufferCapsProvider
 
+/**
+ * Behaviour Processor that will replay the last cached value to new subscribers, and any new values
+ */
 @FlowPreview
 @ExperimentalCoroutinesApi
 internal class BehaviourFlowProcessor<T>(channel: ConflatedBroadcastChannel<T>,
@@ -16,10 +18,8 @@ internal class BehaviourFlowProcessor<T>(channel: ConflatedBroadcastChannel<T>,
 
     companion object {
 
-        fun <E> create(backpressure: FlowBackpressure = BUFFER): BehaviourFlowProcessor<E>
-                = BehaviourFlowProcessor(ConflatedBroadcastChannel(), FlowProducerFactory.create(backpressure))
+        fun <E> create(backpressure: FlowBackpressure = BUFFER): BehaviourFlowProcessor<E> = BehaviourFlowProcessor(ConflatedBroadcastChannel(), FlowProducerFactory.create(backpressure))
 
-        fun <E> createDefault(item: E, backpressure: FlowBackpressure = BUFFER): BehaviourFlowProcessor<E>
-                = BehaviourFlowProcessor(ConflatedBroadcastChannel(item), FlowProducerFactory.create(backpressure))
+        fun <E> createDefault(item: E, backpressure: FlowBackpressure = BUFFER): BehaviourFlowProcessor<E> = BehaviourFlowProcessor(ConflatedBroadcastChannel(item), FlowProducerFactory.create(backpressure))
     }
 }
