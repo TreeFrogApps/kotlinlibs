@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "1.4.10" apply false
     `maven-publish`
+    `java-library`
 }
 
 allprojects {
@@ -31,6 +32,11 @@ subprojects {
                 password = project.findProperty("gpr.public_key") as String
             }
         }
+    }
+
+    java {
+        withJavadocJar()
+        withSourcesJar()
     }
 
     publishing {
