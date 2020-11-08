@@ -58,4 +58,16 @@ inline fun <T> Result<T>.orElseGet(func: () -> T): T =
             else      -> func()
         }
 
+fun <T> Result<T>.orElse(t: T): T =
+        when {
+            isSuccess -> getOrNull()!!
+            else      -> t
+        }
+
+inline fun <T> Result<T>.filter(func: (T) -> Boolean): Result<T> =
+        when {
+            isSuccess && func(getOrNull()!!) -> Result.success(getOrNull()!!)
+            else                             -> Result.failure(exceptionOrNull()!!)
+        }
+
 fun <T> Result<T>.getOrDefault(value: T): T = getOrNull() ?: value
