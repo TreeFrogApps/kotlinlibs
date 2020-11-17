@@ -13,7 +13,7 @@ import kotlinx.coroutines.channels.BroadcastChannel
  */
 @FlowPreview
 @ExperimentalCoroutinesApi
-internal class PublishFlowProcessor<T>(producer: FlowProducer<T>) : FlowProcessor<T>(BroadcastChannel<T>(1), producer) {
+class PublishFlowProcessor<T>(producer: FlowProducer<T>) : FlowProcessor<T>(BroadcastChannel<T>(1), producer) {
 
     companion object {
 

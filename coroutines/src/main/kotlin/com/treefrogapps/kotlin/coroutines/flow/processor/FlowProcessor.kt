@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.flow
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-internal abstract class FlowProcessor<T>(private val broadcastChannel: BroadcastChannel<T>,
+abstract class FlowProcessor<T>(private val broadcastChannel: BroadcastChannel<T>,
                                          private val producer: FlowProducer<T>) : FlowObserver<T> {
 
     override suspend fun onNext(t: T) = producer.produce(broadcastChannel, t)

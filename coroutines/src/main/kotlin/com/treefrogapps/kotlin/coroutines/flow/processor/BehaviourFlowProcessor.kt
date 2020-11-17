@@ -13,7 +13,7 @@ import kotlinx.coroutines.channels.ConflatedBroadcastChannel
  */
 @FlowPreview
 @ExperimentalCoroutinesApi
-internal class BehaviourFlowProcessor<T>(channel: ConflatedBroadcastChannel<T>,
+class BehaviourFlowProcessor<T>(channel: ConflatedBroadcastChannel<T>,
                                          producer: FlowProducer<T>) : FlowProcessor<T>(channel, producer) {
 
     companion object {
