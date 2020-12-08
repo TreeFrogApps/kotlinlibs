@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
 group = "com.treefrogapps.kotlin.coroutines"
 project.extra["name"] = "coroutines"
-version = "1.1.0"
+version = "1.1.1"
 
 dependencies {
     // Kotlin
