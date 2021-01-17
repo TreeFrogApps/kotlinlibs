@@ -10,3 +10,9 @@ inline fun <T> T?.orElse(func: () -> T): T =
             else         -> this
         }
 
+inline fun <T> T?.orElseMaybe(func: () -> T?): T? =
+        when {
+            this == null -> func()
+            else         -> this
+        }
+
