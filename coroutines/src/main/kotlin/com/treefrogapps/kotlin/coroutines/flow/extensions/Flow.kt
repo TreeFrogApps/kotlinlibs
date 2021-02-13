@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.take
 
 fun <T> Flow<T>.first(): Flow<T> = take(1)
 
-fun <T> Flow<T>.firstIf(block: (T) -> Boolean): Flow<T> = take(1).filter { block(it) }
+inline fun <T> Flow<T>.firstIf(crossinline block: suspend (T) -> Boolean): Flow<T> = take(1).filter(block)
 
-fun <T> Flow<T>.firstOrDefault(default: T, block: (T) -> Boolean): Flow<T> =
+inline fun <T> Flow<T>.firstOrDefault(default: T, crossinline block: suspend (T) -> Boolean): Flow<T> =
     take(1)
-        .filter { block(it) }
+        .filter(block)
         .onEmpty { emit(default) }
