@@ -1,6 +1,9 @@
-package com.treefrogapps.kotlin.coroutines.flow.extensions
+package com.treefrogapps.kotlin.coroutines.flow
 
 import com.treefrogapps.kotlin.coroutines.flow.FlowTestObserver.Companion.test
+import com.treefrogapps.kotlin.coroutines.flow.extensions.first
+import com.treefrogapps.kotlin.coroutines.flow.extensions.firstIf
+import com.treefrogapps.kotlin.coroutines.flow.extensions.firstOrDefault
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runBlockingTest
@@ -8,7 +11,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class FlowTest {
+class FlowExtensionsTest {
 
 
     @Test fun `whenFlowWithMultipleEmissions whenFirst thenOnlyObserveFirstItem`() = runBlockingTest {
