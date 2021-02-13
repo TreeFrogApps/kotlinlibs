@@ -7,8 +7,7 @@ import kotlinx.coroutines.flow.*
 /**
  * Test observer class for asserting flows
  */
-@Suppress("EXPERIMENTAL_API_USAGE")
-class FlowTestObserver<T>(scope: CoroutineScope, flow: Flow<T>) {
+class FlowTestObserver<T> internal constructor(scope: CoroutineScope, flow: Flow<T>) {
 
     companion object {
         fun <T> Flow<T>.test(scope: CoroutineScope): FlowTestObserver<T> = FlowTestObserver(scope, this)
