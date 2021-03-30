@@ -26,10 +26,10 @@ subprojects {
         jcenter()
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/treefrogapps/kotlinlibs")
+            url = uri(project.findProperty("gpr_url") as String)
             credentials {
-                username = project.findProperty("gpr.user") as String
-                password = project.findProperty("gpr.public_key") as String
+                username = project.findProperty("gpr_user") as String
+                password = project.findProperty("gpr_public_key") as String
             }
         }
     }
@@ -43,10 +43,10 @@ subprojects {
         repositories {
             maven {
                 name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/treefrogapps/kotlinlibs")
+                url = uri(project.findProperty("gpr_url") as String)
                 credentials {
-                    username = project.findProperty("gpr.user") as String
-                    password = project.findProperty("gpr.key") as String
+                    username = project.findProperty("gpr_user") as String
+                    password = project.findProperty("gpr_key") as String
                 }
             }
         }
