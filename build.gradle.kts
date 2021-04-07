@@ -26,7 +26,7 @@ subprojects {
         jcenter()
         maven {
             name = "GitHubPackages"
-            url = uri(project.findProperty("gpr_url") as String)
+            url = uri(project.findProperty("gpr_url_kotlin_libs") as String)
             credentials {
                 username = project.findProperty("gpr_user") as String
                 password = project.findProperty("gpr_public_key") as String
@@ -43,7 +43,7 @@ subprojects {
         repositories {
             maven {
                 name = "GitHubPackages"
-                url = uri(project.findProperty("gpr_url") as String)
+                url = uri(project.findProperty("gpr_url_kotlin_libs") as String)
                 credentials {
                     username = project.findProperty("gpr_user") as String
                     password = project.findProperty("gpr_key") as String
