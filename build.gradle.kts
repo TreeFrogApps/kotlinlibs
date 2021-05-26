@@ -12,7 +12,6 @@ allprojects {
     repositories {
         mavenCentral()
         mavenLocal()
-        jcenter()
     }
 }
 
@@ -23,7 +22,6 @@ subprojects {
 
     repositories {
         mavenCentral()
-        jcenter()
         maven {
             name = "GitHubPackages"
             url = uri(project.findProperty("gpr_url_kotlin_libs") as String)
