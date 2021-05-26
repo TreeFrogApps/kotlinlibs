@@ -5,16 +5,15 @@ import com.treefrogapps.kotlin.coroutines.flow.FlowObserver
 import com.treefrogapps.kotlin.coroutines.flow.FlowProducer
 import com.treefrogapps.kotlin.coroutines.flow.subscribe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 
-@FlowPreview
-@ExperimentalCoroutinesApi
+@ObsoleteCoroutinesApi
 abstract class FlowProcessor<T>(private val broadcastChannel: BroadcastChannel<T>,
-                                         private val producer: FlowProducer<T>) : FlowObserver<T> {
+                                private val producer: FlowProducer<T>) : FlowObserver<T> {
 
     override suspend fun onNext(t: T) = producer.produce(broadcastChannel, t)
 
@@ -42,6 +41,7 @@ abstract class FlowProcessor<T>(private val broadcastChannel: BroadcastChannel<T
      * and preventing a memory leak.
      *
      */
+    @ExperimentalCoroutinesApi
     fun asFlow(): Flow<T> = flow {
         broadcastChannel.openSubscription().run {
             emitAll(this)
@@ -49,6 +49,7 @@ abstract class FlowProcessor<T>(private val broadcastChannel: BroadcastChannel<T
         }
     }
 
+    @ExperimentalCoroutinesApi
     fun asFlowEmitter(): Flow<T> =
             create({ asFlow().subscribe(emitterScope = this).run { setCancellable { cancel() } } })
 }

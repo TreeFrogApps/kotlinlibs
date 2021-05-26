@@ -4,6 +4,7 @@ import com.treefrogapps.kotlin.coroutines.flow.FlowTestObserver
 import com.treefrogapps.kotlin.coroutines.flow.FlowTestObserver.Companion.test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
@@ -16,23 +17,26 @@ import kotlin.coroutines.EmptyCoroutineContext
  * [BehaviourFlowProcessor] specific tests (replay 1 behaviour).
  * Base [FlowProcessor] behavioural tests covered in [PublishFlowProcessorTest] class
  */
-@FlowPreview
 @ExperimentalCoroutinesApi
+@ObsoleteCoroutinesApi
 class BehaviourFlowProcessorTest {
 
     private lateinit var processor: BehaviourFlowProcessor<Int>
 
-    @Before fun setUp() {
+    @Before
+    fun setUp() {
         processor = BehaviourFlowProcessor.create()
     }
 
-    @After fun tearDown() {
+    @After
+    fun tearDown() {
         runBlocking(EmptyCoroutineContext) {
             processor.onComplete()
         }
     }
 
-    @Test fun `given publisher emission and before any observers subscribed when multiple new observers then previous emission observed`() = runBlockingTest {
+    @Test
+    fun `given publisher emission and before any observers subscribed when multiple new observers then previous emission observed`() = runBlockingTest {
         processor.onNext(1)
 
         val testObserver: FlowTestObserver<Int> = processor.asFlow().test(this)
@@ -47,7 +51,8 @@ class BehaviourFlowProcessorTest {
         }
     }
 
-    @Test fun `given multiple publisher emissions and before any observers subscribed when multiple new observers then latest emission observed`() = runBlockingTest {
+    @Test
+    fun `given multiple publisher emissions and before any observers subscribed when multiple new observers then latest emission observed`() = runBlockingTest {
         processor.onNext(1)
         processor.onNext(2)
 
@@ -64,7 +69,8 @@ class BehaviourFlowProcessorTest {
         }
     }
 
-    @Test fun `given publisher emission and then one observer when new emission then another observer then latest emission observed by both`() = runBlockingTest {
+    @Test
+    fun `given publisher emission and then one observer when new emission then another observer then latest emission observed by both`() = runBlockingTest {
         processor.onNext(1)
 
         val testObserver: FlowTestObserver<Int> = processor.asFlow().test(this)
@@ -89,7 +95,8 @@ class BehaviourFlowProcessorTest {
         }
     }
 
-    @Test fun `given publisher emission when job cancelled and new publisher emission then new emission not observed`() = runBlockingTest {
+    @Test
+    fun `given publisher emission when job cancelled and new publisher emission then new emission not observed`() = runBlockingTest {
         val testObserver = processor.asFlow().test(this)
         processor.onNext(1)
         testObserver.finish()
@@ -103,7 +110,8 @@ class BehaviourFlowProcessorTest {
         }
     }
 
-    @Test fun `given publisher with default when new observers subscribed then default value observed`() = runBlockingTest {
+    @Test
+    fun `given publisher with default when new observers subscribed then default value observed`() = runBlockingTest {
         processor = BehaviourFlowProcessor.createDefault(1)
 
         val testObserver: FlowTestObserver<Int> = processor.asFlow().test(this)

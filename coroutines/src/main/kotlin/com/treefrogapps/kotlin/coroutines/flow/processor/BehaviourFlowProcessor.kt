@@ -5,16 +5,16 @@ import com.treefrogapps.kotlin.coroutines.flow.FlowBackpressure.BUFFER
 import com.treefrogapps.kotlin.coroutines.flow.FlowProducer
 import com.treefrogapps.kotlin.coroutines.flow.FlowProducerFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 
 /**
  * Behaviour Processor that will replay the last cached value to new subscribers, and any new values
  */
-@FlowPreview
 @ExperimentalCoroutinesApi
-class BehaviourFlowProcessor<T>(channel: ConflatedBroadcastChannel<T>,
-                                         producer: FlowProducer<T>) : FlowProcessor<T>(channel, producer) {
+@ObsoleteCoroutinesApi
+class BehaviourFlowProcessor<T> constructor(channel: ConflatedBroadcastChannel<T>,
+                                            producer: FlowProducer<T>) : FlowProcessor<T>(channel, producer) {
 
     companion object {
 

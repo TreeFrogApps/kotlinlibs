@@ -1,4 +1,4 @@
-package com.treefrogapps.kotlin.coroutines.flow.extensions
+package com.treefrogapps.kotlin.coroutines.flow
 
 import kotlinx.coroutines.flow.*
 

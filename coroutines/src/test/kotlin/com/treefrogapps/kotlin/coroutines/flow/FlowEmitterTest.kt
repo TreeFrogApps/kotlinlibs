@@ -5,6 +5,7 @@ import com.treefrogapps.kotlin.coroutines.flow.processor.FlowProcessor
 import com.treefrogapps.kotlin.coroutines.flow.processor.PublishFlowProcessor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.take
@@ -15,8 +16,8 @@ import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.TimeUnit.SECONDS
 
-@FlowPreview
 @ExperimentalCoroutinesApi
+@ObsoleteCoroutinesApi
 class FlowEmitterTest {
 
     private lateinit var producer: FlowProcessor<Long>

@@ -5,14 +5,14 @@ import com.treefrogapps.kotlin.coroutines.flow.FlowBackpressure.BUFFER
 import com.treefrogapps.kotlin.coroutines.flow.FlowProducer
 import com.treefrogapps.kotlin.coroutines.flow.FlowProducerFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.BroadcastChannel
 
 /**
  * Publish Processor that publishes values to any subscribers
  */
-@FlowPreview
 @ExperimentalCoroutinesApi
+@ObsoleteCoroutinesApi
 class PublishFlowProcessor<T>(producer: FlowProducer<T>) : FlowProcessor<T>(BroadcastChannel<T>(1), producer) {
 
     companion object {

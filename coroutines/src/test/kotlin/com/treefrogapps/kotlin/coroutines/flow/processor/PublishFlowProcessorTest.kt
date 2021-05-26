@@ -3,7 +3,7 @@ package com.treefrogapps.kotlin.coroutines.flow.processor
 import com.treefrogapps.kotlin.coroutines.flow.FlowTestObserver
 import com.treefrogapps.kotlin.coroutines.flow.FlowTestObserver.Companion.test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.ClosedSendChannelException
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
@@ -13,8 +13,9 @@ import org.junit.Before
 import org.junit.Test
 import kotlin.coroutines.EmptyCoroutineContext
 
-@FlowPreview
+
 @ExperimentalCoroutinesApi
+@ObsoleteCoroutinesApi
 class PublishFlowProcessorTest {
 
     private lateinit var processor: PublishFlowProcessor<Int>
