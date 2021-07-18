@@ -5,52 +5,54 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 
-fun <T> Flow<T>.doOnSubscribe(action: () -> Unit): Flow<T> = flow {
-    action()
-    collect { emit(it) }
-}
-
-fun <T> Flow<T>.doOnComplete(action: () -> Unit): Flow<T> = flow {
-    emitAll(this@doOnComplete)
-    action()
-}
-
-fun <T> Flow<T>.doFinally(action: () -> Unit): Flow<T> = flow {
-    try {
-        emitAll(this@doFinally)
-    } finally {
-        action()
-    }
-}
-
-fun <T> Flow<T>.doOnEach(action: (t: T) -> Unit): Flow<T> = flow {
-    collect { action(it); emit(it) }
-}
-
-fun <T> Flow<T>.doAfterEach(action: (t: T) -> Unit): Flow<T> = flow {
-    collect { emit(it); action(it) }
-}
-
 @ExperimentalCoroutinesApi
 fun <T> Flow<T>.subscribe(scope: CoroutineScope,
                           next: suspend (t: T) -> Unit,
                           error: (Throwable) -> Unit = {},
                           complete: suspend () -> Unit = {}): Job =
         onEach(next::invoke)
-            .onCompletion { complete() }
-            .catch { error(it) }
-            .launchIn(scope)
+                .onCompletion { if (it == null) complete() }
+                .catch { error(it) }
+                .launchIn(scope)
 
 @ExperimentalCoroutinesApi
 fun <T> Flow<T>.subscribe(scope: CoroutineScope, observer: FlowObserver<T>): Job =
         onEach(observer::onNext)
-            .onCompletion { observer.onComplete() }
-            .catch { observer.onError(it) }
-            .launchIn(scope)
+                .onCompletion { if (it == null) observer.onComplete() }
+                .catch { observer.onError(it) }
+                .launchIn(scope)
 
 @ExperimentalCoroutinesApi
 internal fun <T> Flow<T>.subscribe(emitterScope: FlowEmitterScope<T>): Job =
         onEach(emitterScope::onNext)
-            .onCompletion { emitterScope.onComplete() }
-            .catch { emitterScope.onError(it) }
-            .launchIn(emitterScope)
+                .onCompletion { if (it == null) emitterScope.onComplete() }
+                .catch { emitterScope.onError(it) }
+                .launchIn(emitterScope)
+
+fun <T> Flow<T>.launchCompletable(
+        scope: CoroutineScope,
+        onCompleted: suspend () -> Unit,
+        onError: suspend (Throwable) -> Unit = {}): Job =
+        onCompletion { if (it == null) onCompleted() }
+                .catch { onError(it) }
+                .launchIn(scope)
+
+fun <T> Flow<T>.launchSingle(
+        scope: CoroutineScope,
+        onSuccess: suspend (T) -> Unit,
+        onError: suspend (Throwable) -> Unit = {}): Job =
+        take(1)
+                .onEach { onSuccess(it) }
+                .catch { onError(it) }
+                .launchIn(scope)
+
+fun <T> Flow<T>.launchMaybe(
+        scope: CoroutineScope,
+        onSuccess: suspend (T) -> Unit,
+        onEmpty: suspend () -> Unit,
+        onError: suspend (Throwable) -> Unit = {}): Job =
+        take(1)
+                .onEmpty { onEmpty() }
+                .onEach { onSuccess(it) }
+                .catch { onError(it) }
+                .launchIn(scope)

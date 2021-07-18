@@ -2,7 +2,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.5.10" apply false
+    kotlin("jvm") version "1.5.21" apply false
     `maven-publish`
     `java-library`
 }

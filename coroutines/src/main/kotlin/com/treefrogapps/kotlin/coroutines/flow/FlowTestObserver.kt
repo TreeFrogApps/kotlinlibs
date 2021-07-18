@@ -16,16 +16,19 @@ class FlowTestObserver<T> internal constructor(scope: CoroutineScope, flow: Flow
     private val values: MutableList<T> = mutableListOf()
     private val job: Job =
             flow.onEach(values::add)
-                .onCompletion { isComplete = true }
-                .catch { error = it }
-                .launchIn(scope)
+                    .onCompletion { isCompleted = true; isCompleteSuccessfully = it == null }
+                    .catch { error = it }
+                    .launchIn(scope)
 
-    private var isComplete: Boolean = false
+    private var isCompleted: Boolean = false
+    private var isCompleteSuccessfully: Boolean = false
     var error: Throwable? = null
 
     val first: T? get() = values.firstOrNull()
     val second: T? get() = values.elementAtOrNull(1)
     val third: T? get() = values.elementAtOrNull(2)
+    val fourth: T? get() = values.elementAtOrNull(3)
+    val fifth: T? get() = values.elementAtOrNull(4)
 
     fun assertValueCount(count: Int) {
         if (values.size != count) throw AssertionError("Values count mismatch expected $count, was ${values.size}")
@@ -36,15 +39,23 @@ class FlowTestObserver<T> internal constructor(scope: CoroutineScope, flow: Flow
     }
 
     fun assertComplete() {
-        if (!isComplete) throw AssertionError("Not Completed")
+        if (!isCompleted) throw AssertionError("Not Completed")
+    }
+
+    fun assertCompletedSuccessfully() {
+        if (!isCompleteSuccessfully) throw AssertionError("Not Completed Successfully")
     }
 
     fun assertNotComplete() {
-        if (isComplete) throw AssertionError("Completed")
+        if (isCompleted) throw AssertionError("Completed")
     }
 
     fun assertNoErrors() {
         if (error != null) throw AssertionError("Error occurred")
+    }
+
+    fun assertValue(value : T, idx : Int = 0) {
+        if (values.elementAtOrNull(idx) != value) throw AssertionError("Expected value ${value}, but actual ${values.elementAtOrNull(idx)}")
     }
 
     inline fun <reified T : Throwable> assertError() {
