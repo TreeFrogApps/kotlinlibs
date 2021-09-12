@@ -18,7 +18,7 @@ import kotlinx.coroutines.isActive
  * @param block producer block which has a [FlowEmitterScope.setCancellable] block for cleanup of dependencies
  * @param backpressure back pressure strategy
  */
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 class FlowEmitter<T> private constructor(private val block: suspend FlowEmitterScope<T>.() -> Unit,
                                          private val backpressure: FlowBackpressure) : Flow<T> {
 
@@ -27,7 +27,6 @@ class FlowEmitter<T> private constructor(private val block: suspend FlowEmitterS
         /**
          * Factory method
          */
-        @ExperimentalCoroutinesApi
         fun <T> create(block: suspend FlowEmitterScope<T>.() -> Unit, backpressure: FlowBackpressure = BUFFER): Flow<T> = FlowEmitter(block, backpressure)
 
         fun interval(delayMillis: Long, initialDelayMillis: Long = 0L): Flow<Long> = create(
@@ -44,7 +43,7 @@ class FlowEmitter<T> private constructor(private val block: suspend FlowEmitterS
 
     private val wrapped: Flow<T> = channelFlow { block(FlowEmitterScope(this, create(backpressure))) }
 
-    @InternalCoroutinesApi
+    @OptIn(InternalCoroutinesApi::class)
     override suspend fun collect(collector: FlowCollector<T>) {
         wrapped.collect(collector)
     }

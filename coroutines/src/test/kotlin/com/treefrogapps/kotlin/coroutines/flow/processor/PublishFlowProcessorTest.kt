@@ -14,7 +14,7 @@ import org.junit.Test
 import kotlin.coroutines.EmptyCoroutineContext
 
 
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 @ObsoleteCoroutinesApi
 class PublishFlowProcessorTest {
 
@@ -49,13 +49,13 @@ class PublishFlowProcessorTest {
         processor.onNext(1)
 
         sequenceOf(testObserver, testObserver2)
-            .forEach { observer ->
-                observer.assert {
-                    assertEquals(1, first)
-                    assertNotComplete()
-                    assertNoErrors()
+                .forEach { observer ->
+                    observer.assert {
+                        assertEquals(1, first)
+                        assertNotComplete()
+                        assertNoErrors()
+                    }
                 }
-            }
     }
 
     @Test fun `given publisher emission when before any observers subscribed then emission not observed`() = runBlockingTest {
