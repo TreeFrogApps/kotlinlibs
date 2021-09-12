@@ -2,7 +2,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.5.21" apply false
+    kotlin("jvm") version "1.5.30" apply false
     `maven-publish`
     `java-library`
 }
@@ -59,7 +59,10 @@ subprojects {
     val javaVersion = "1.8"
 
     tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = javaVersion
+        kotlinOptions {
+            jvmTarget = javaVersion
+            freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
+        }
     }
 
     tasks.withType<JavaCompile> {

@@ -6,12 +6,11 @@ import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlin.coroutines.CoroutineContext
 
-/**
- *
- */
-@ExperimentalCoroutinesApi
-class FlowEmitterScope<T> constructor(private val producerScope: ProducerScope<T>,
-                                      private val producer: FlowProducer<T>) : FlowObserver<T>, CoroutineScope {
+@OptIn(ExperimentalCoroutinesApi::class)
+class FlowEmitterScope<T> constructor(
+        private val producerScope: ProducerScope<T>,
+        private val producer: FlowProducer<T>
+) : FlowObserver<T>, CoroutineScope {
 
 
     override val coroutineContext: CoroutineContext = producerScope.coroutineContext

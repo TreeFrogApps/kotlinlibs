@@ -11,8 +11,9 @@ import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 /**
  * Behaviour Processor that will replay the last cached value to new subscribers, and any new values
  */
-@ExperimentalCoroutinesApi
+
 @ObsoleteCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 class BehaviourFlowProcessor<T> constructor(channel: ConflatedBroadcastChannel<T>,
                                             producer: FlowProducer<T>) : FlowProcessor<T>(channel, producer) {
 

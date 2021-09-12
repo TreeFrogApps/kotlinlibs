@@ -11,8 +11,9 @@ import kotlinx.coroutines.channels.BroadcastChannel
 /**
  * Publish Processor that publishes values to any subscribers
  */
-@ExperimentalCoroutinesApi
+
 @ObsoleteCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 class PublishFlowProcessor<T>(producer: FlowProducer<T>) : FlowProcessor<T>(BroadcastChannel<T>(1), producer) {
 
     companion object {

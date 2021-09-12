@@ -4,7 +4,6 @@ import com.treefrogapps.kotlin.coroutines.flow.FlowTestObserver.Companion.test
 import com.treefrogapps.kotlin.coroutines.flow.processor.FlowProcessor
 import com.treefrogapps.kotlin.coroutines.flow.processor.PublishFlowProcessor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
@@ -16,8 +15,8 @@ import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.TimeUnit.SECONDS
 
-@ExperimentalCoroutinesApi
 @ObsoleteCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 class FlowEmitterTest {
 
     private lateinit var producer: FlowProcessor<Long>
@@ -76,11 +75,11 @@ class FlowEmitterTest {
         emitter = FlowEmitter.create({ setCancellable { closed = true } })
 
         emitter.test(this)
-            .apply { finish() }
-            .assert {
-                assertComplete()
-                assertTrue(closed)
-            }
+                .apply { finish() }
+                .assert {
+                    assertComplete()
+                    assertTrue(closed)
+                }
     }
 
     @Test fun `given encapsulated emitter when error then error propagated to collector`() = runBlockingTest {
@@ -91,27 +90,27 @@ class FlowEmitterTest {
 
     @Test fun `given encapsulated emitter when values produced then emissions observed`() = runBlockingTest {
         emitter = FlowEmitter.create({
-                                         onNext(1L)
-                                         onNext(2L)
-                                     })
+            onNext(1L)
+            onNext(2L)
+        })
 
         emitter.test(this)
-            .assert {
-                assertValueCount(2)
-                assertEquals(1L, first)
-                assertEquals(2L, second)
-            }
+                .assert {
+                    assertValueCount(2)
+                    assertEquals(1L, first)
+                    assertEquals(2L, second)
+                }
     }
 
     @Test(expected = IllegalStateException::class) fun `given encapsulated emitter when error and no error handling then error thrown`() = runBlockingTest {
         FlowEmitter.create<Long>({ throw IllegalStateException() })
-            .launchIn(this)
+                .launchIn(this)
     }
 
     @Test fun `given interval emitter when values produced one every second for seconds then correct emission count observed`() = runBlockingTest {
         val observer = FlowEmitter.interval(delayMillis = SECONDS.toMillis(1),
-                                            initialDelayMillis = SECONDS.toMillis(1))
-            .test(this)
+                initialDelayMillis = SECONDS.toMillis(1))
+                .test(this)
 
         advanceTimeBy(SECONDS.toMillis(10))
 
@@ -126,9 +125,9 @@ class FlowEmitterTest {
 
     @Test fun `given interval emitter when values produced one every second for seconds and five taken then correct emission count observed`() = runBlockingTest {
         val observer = FlowEmitter.interval(delayMillis = SECONDS.toMillis(1),
-                                            initialDelayMillis = SECONDS.toMillis(1))
-            .take(5)
-            .test(this)
+                initialDelayMillis = SECONDS.toMillis(1))
+                .take(5)
+                .test(this)
 
         advanceTimeBy(SECONDS.toMillis(5))
 

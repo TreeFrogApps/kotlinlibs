@@ -11,7 +11,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 
+
 @ObsoleteCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 abstract class FlowProcessor<T>(private val broadcastChannel: BroadcastChannel<T>,
                                 private val producer: FlowProducer<T>) : FlowObserver<T> {
 
@@ -41,7 +43,6 @@ abstract class FlowProcessor<T>(private val broadcastChannel: BroadcastChannel<T
      * and preventing a memory leak.
      *
      */
-    @ExperimentalCoroutinesApi
     fun asFlow(): Flow<T> = flow {
         broadcastChannel.openSubscription().run {
             emitAll(this)
@@ -49,7 +50,6 @@ abstract class FlowProcessor<T>(private val broadcastChannel: BroadcastChannel<T
         }
     }
 
-    @ExperimentalCoroutinesApi
     fun asFlowEmitter(): Flow<T> =
             create({ asFlow().subscribe(emitterScope = this).run { setCancellable { cancel() } } })
 }

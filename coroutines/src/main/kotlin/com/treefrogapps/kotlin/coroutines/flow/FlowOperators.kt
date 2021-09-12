@@ -5,7 +5,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 
-@ExperimentalCoroutinesApi
 fun <T> Flow<T>.subscribe(scope: CoroutineScope,
                           next: suspend (t: T) -> Unit,
                           error: (Throwable) -> Unit = {},
@@ -15,14 +14,13 @@ fun <T> Flow<T>.subscribe(scope: CoroutineScope,
                 .catch { error(it) }
                 .launchIn(scope)
 
-@ExperimentalCoroutinesApi
 fun <T> Flow<T>.subscribe(scope: CoroutineScope, observer: FlowObserver<T>): Job =
         onEach(observer::onNext)
                 .onCompletion { if (it == null) observer.onComplete() }
                 .catch { observer.onError(it) }
                 .launchIn(scope)
 
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 internal fun <T> Flow<T>.subscribe(emitterScope: FlowEmitterScope<T>): Job =
         onEach(emitterScope::onNext)
                 .onCompletion { if (it == null) emitterScope.onComplete() }
