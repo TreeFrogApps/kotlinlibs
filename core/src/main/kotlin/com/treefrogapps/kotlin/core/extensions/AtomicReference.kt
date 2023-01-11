@@ -11,4 +11,6 @@ inline operator fun <T> AtomicReference<T>.setValue(thisObj: Any?, property: KPr
     set(value)
 }
 
-fun <T> atomicReference(initial: T?): AtomicReference<T?> = AtomicReference(initial)
+fun <T> nullableAtomicReference(initial: T?): AtomicReference<T?> = AtomicReference(initial)
+
+fun <T> atomicReference(initial: T): AtomicReference<T> = AtomicReference(initial)
