@@ -2,22 +2,28 @@ package com.treefrogapps.kotlin.coroutines.flow
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.flow.SharingStarted.Companion.Lazily
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 
-fun <T> Flow<T>.asNullableStateFlow(
-    scope: CoroutineScope,
-    started: SharingStarted = Lazily,
-    initialState: T? = null
-): StateFlow<T?> =
-    this.stateIn(scope, started, initialState)
 
 fun <T> Flow<T>.asStateFlow(
     scope: CoroutineScope,
     started: SharingStarted = WhileSubscribed(stopTimeoutMillis = 5_000),
-    initialState: T
+    initialValue: T
 ): StateFlow<T> =
-    this.stateIn(scope, started, initialState)
+    stateIn(
+        scope = scope,
+        started = started,
+        initialValue = initialValue)
+
+fun <T> Flow<T>.stateInWhileSubscribed(
+    scope: CoroutineScope,
+    stopTimeoutMillis : Long = 5_000,
+    initialValue: T
+): StateFlow<T> =
+    stateIn(
+        scope = scope,
+        started = WhileSubscribed(stopTimeoutMillis = stopTimeoutMillis),
+        initialValue = initialValue)
 
 fun <T> MutableStateFlow<T>.set(t: T) {
     value = t
