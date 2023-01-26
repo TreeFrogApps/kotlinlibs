@@ -12,8 +12,6 @@ fun Long.formattedDuration(
     timeUnit: TimeUnit = TimeUnit.MILLISECONDS,
     format: DurationFormat = DurationFormat.MinutesSeconds
 ): String {
-    check(value = this >= 0) { "Only positive values allowed"}
-
     return when (format) {
         DurationFormat.Seconds             ->
             String.format(format.format, timeUnit.toSeconds(this))
