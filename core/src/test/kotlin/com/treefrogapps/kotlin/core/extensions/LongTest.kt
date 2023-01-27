@@ -71,4 +71,103 @@ class LongTest {
 
         assertEquals(expected, result)
     }
+
+    @Test
+    fun  `given one kilobyte when formatted as kilobytes then correct string result`() {
+        val expected = "1Kb"
+
+        val result = (1L).formattedSize(
+            sizeUnit = SizeUnit.KiloBytes,
+            format = SizeFormat.Kb)
+
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun  `given one kilobyte when formatted as megabytes then correct string result`() {
+        val expected = "0.01Mb"
+
+        val result = (1L).formattedSize(
+            sizeUnit = SizeUnit.KiloBytes,
+            format = SizeFormat.Mb)
+
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun  `given one kilobyte when formatted as gigabytes then correct string result`() {
+        val expected = "0.00Gb"
+
+        val result = (1L).formattedSize(
+            sizeUnit = SizeUnit.KiloBytes,
+            format = SizeFormat.Gb)
+
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun  `given one megabyte when formatted as kilobytes then correct string result`() {
+        val expected = "1,024Kb"
+
+        val result = (1L).formattedSize(
+            sizeUnit = SizeUnit.MegaBytes,
+            format = SizeFormat.Kb)
+
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun  `given one megabyte when formatted as megabytes then correct string result`() {
+        val expected = "1.00Mb"
+
+        val result = (1L).formattedSize(
+            sizeUnit = SizeUnit.MegaBytes,
+            format = SizeFormat.Mb)
+
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun  `given one megabyte when formatted as gigabytes then correct string result`() {
+        val expected = "0.01Gb"
+
+        val result = (1L).formattedSize(
+            sizeUnit = SizeUnit.MegaBytes,
+            format = SizeFormat.Gb)
+
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun  `given one gigabyte when formatted as kilobytes then correct string result`() {
+        val expected = "1,048,576Kb"
+
+        val result = (1L).formattedSize(
+            sizeUnit = SizeUnit.GigaBytes,
+            format = SizeFormat.Kb)
+
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun  `given one gigabyte when formatted as megabytes then correct string result`() {
+        val expected = "1,024.00Mb"
+
+        val result = (1L).formattedSize(
+            sizeUnit = SizeUnit.GigaBytes,
+            format = SizeFormat.Mb)
+
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun  `given one gigabyte when formatted as gigabytes then correct string result`() {
+        val expected = "1.00Gb"
+
+        val result = (1L).formattedSize(
+            sizeUnit = SizeUnit.GigaBytes,
+            format = SizeFormat.Gb)
+
+        assertEquals(expected, result)
+    }
 }
