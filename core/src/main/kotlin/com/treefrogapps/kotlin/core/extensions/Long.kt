@@ -1,6 +1,7 @@
 package com.treefrogapps.kotlin.core.extensions
 
 import com.treefrogapps.kotlin.core.extensions.SizeUnit.Companion.Scale
+import com.treefrogapps.kotlin.core.extensions.SizeUnit.Companion.toBytes
 import com.treefrogapps.kotlin.core.extensions.SizeUnit.Companion.toGigaBytes
 import com.treefrogapps.kotlin.core.extensions.SizeUnit.Companion.toKiloBytes
 import com.treefrogapps.kotlin.core.extensions.SizeUnit.Companion.toMegaBytes
@@ -38,6 +39,7 @@ fun Long.formattedDuration(
 }
 
 enum class SizeUnit {
+    Bytes,
     KiloBytes,
     MegaBytes,
     GigaBytes;
@@ -45,8 +47,17 @@ enum class SizeUnit {
     companion object {
         internal const val Scale: Long = 1024L
 
+        fun SizeUnit.toBytes(size: Long): Long =
+            when (this) {
+                Bytes     -> size
+                KiloBytes -> size * Scale
+                MegaBytes -> size * Scale * Scale
+                GigaBytes -> size * Scale * Scale * Scale
+            }
+
         fun SizeUnit.toKiloBytes(size: Long): Long =
             when (this) {
+                Bytes     -> size / Scale
                 KiloBytes -> size
                 MegaBytes -> size * Scale
                 GigaBytes -> size * Scale * Scale
@@ -54,6 +65,7 @@ enum class SizeUnit {
 
         fun SizeUnit.toMegaBytes(size: Long): Long =
             when (this) {
+                Bytes     -> size / (Scale * Scale)
                 KiloBytes -> size / Scale
                 MegaBytes -> size
                 GigaBytes -> size * Scale
@@ -61,24 +73,31 @@ enum class SizeUnit {
 
         fun SizeUnit.toGigaBytes(size: Long): Long =
             when (this) {
-                KiloBytes -> size / Scale
-                MegaBytes -> size / (Scale * Scale)
+                Bytes     -> size / (Scale * Scale * Scale)
+                KiloBytes -> size / (Scale * Scale)
+                MegaBytes -> size / Scale
                 GigaBytes -> size
             }
     }
 }
 
 enum class SizeFormat(val format: String) {
+    B(format = "%,db"),
     Kb(format = "%,dKb"),
     Mb(format = "%,d.%02dMb"),
     Gb(format = "%,d.%02dGb"),
 }
 
 fun Long.formattedSize(
-    sizeUnit: SizeUnit = SizeUnit.KiloBytes,
+    sizeUnit: SizeUnit = SizeUnit.Bytes,
     format: SizeFormat = SizeFormat.Mb
 ): String {
     return when (format) {
+        SizeFormat.B  ->
+            String.format(
+                format.format,
+                sizeUnit.toBytes(size = this))
+
         SizeFormat.Kb ->
             String.format(
                 format.format,

@@ -73,6 +73,17 @@ class LongTest {
     }
 
     @Test
+    fun  `given one byte when formatted as bytes then correct string result`() {
+        val expected = "1b"
+
+        val result = (1L).formattedSize(
+            sizeUnit = SizeUnit.Bytes,
+            format = SizeFormat.B)
+
+        assertEquals(expected, result)
+    }
+
+    @Test
     fun  `given one kilobyte when formatted as kilobytes then correct string result`() {
         val expected = "1Kb"
 
@@ -112,6 +123,28 @@ class LongTest {
         val result = (1L).formattedSize(
             sizeUnit = SizeUnit.MegaBytes,
             format = SizeFormat.Kb)
+
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun  `given one megabyte when formatted as bytes then correct string result`() {
+        val expected = "1,048,576b"
+
+        val result = (1L).formattedSize(
+            sizeUnit = SizeUnit.MegaBytes,
+            format = SizeFormat.B)
+
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun  `given one megabyte as bytes when formatted as megabytes then correct string result`() {
+        val expected = "1.00Mb"
+
+        val result = (1_048_576L).formattedSize(
+            sizeUnit = SizeUnit.Bytes,
+            format = SizeFormat.Mb)
 
         assertEquals(expected, result)
     }
