@@ -1,10 +1,6 @@
 package com.treefrogapps.kotlin.core.extensions
 
-import com.treefrogapps.kotlin.core.extensions.SizeUnit.Companion.Scale
 import com.treefrogapps.kotlin.core.extensions.SizeUnit.Companion.toBytes
-import com.treefrogapps.kotlin.core.extensions.SizeUnit.Companion.toGigaBytes
-import com.treefrogapps.kotlin.core.extensions.SizeUnit.Companion.toKiloBytes
-import com.treefrogapps.kotlin.core.extensions.SizeUnit.Companion.toMegaBytes
 import java.util.concurrent.TimeUnit
 
 enum class DurationFormat(val format: String) {
@@ -45,38 +41,14 @@ enum class SizeUnit {
     GigaBytes;
 
     companion object {
-        internal const val Scale: Long = 1024L
+        private const val SIScale: Long = 1000L
 
         fun SizeUnit.toBytes(size: Long): Long =
             when (this) {
                 Bytes     -> size
-                KiloBytes -> size * Scale
-                MegaBytes -> size * Scale * Scale
-                GigaBytes -> size * Scale * Scale * Scale
-            }
-
-        fun SizeUnit.toKiloBytes(size: Long): Long =
-            when (this) {
-                Bytes     -> size / Scale
-                KiloBytes -> size
-                MegaBytes -> size * Scale
-                GigaBytes -> size * Scale * Scale
-            }
-
-        fun SizeUnit.toMegaBytes(size: Long): Long =
-            when (this) {
-                Bytes     -> size / (Scale * Scale)
-                KiloBytes -> size / Scale
-                MegaBytes -> size
-                GigaBytes -> size * Scale
-            }
-
-        fun SizeUnit.toGigaBytes(size: Long): Long =
-            when (this) {
-                Bytes     -> size / (Scale * Scale * Scale)
-                KiloBytes -> size / (Scale * Scale)
-                MegaBytes -> size / Scale
-                GigaBytes -> size
+                KiloBytes -> size * SIScale
+                MegaBytes -> size * SIScale * SIScale
+                GigaBytes -> size * SIScale * SIScale * SIScale
             }
     }
 }
@@ -84,10 +56,16 @@ enum class SizeUnit {
 enum class SizeFormat(val format: String) {
     B(format = "%,db"),
     Kb(format = "%,dKb"),
-    Mb(format = "%,d.%02dMb"),
-    Gb(format = "%,d.%02dGb"),
+    Mb(format = "%,.2fMb"),
+    Gb(format = "%,.2fGb"),
 }
 
+/**
+ * Use SI format (not Decimal) :
+ * 1,000 bytes == 1 Kilobyte
+ * 1,000 Kilobytes == 1 Megabyte
+ * 1,000 Megabytes = 1 Gigabyte
+ */
 fun Long.formattedSize(
     sizeUnit: SizeUnit = SizeUnit.Bytes,
     format: SizeFormat = SizeFormat.Mb
@@ -101,19 +79,18 @@ fun Long.formattedSize(
         SizeFormat.Kb ->
             String.format(
                 format.format,
-                sizeUnit.toKiloBytes(size = this))
+                sizeUnit.toBytes(size = this) / 1_000)
 
         SizeFormat.Mb ->
             String.format(
                 format.format,
-                sizeUnit.toMegaBytes(size = this),
-                sizeUnit.toKiloBytes(size = this) % Scale)
+                sizeUnit.toBytes(size = this).toDouble() / 1_000_000)
 
         SizeFormat.Gb ->
             String.format(
                 format.format,
-                sizeUnit.toGigaBytes(size = this),
-                sizeUnit.toMegaBytes(size = this) % Scale)
+                sizeUnit.toBytes(size = this).toDouble() / 1_000_000_000)
+
     }
 }
 

@@ -95,10 +95,10 @@ class LongTest {
     }
 
     @Test
-    fun  `given one kilobyte when formatted as megabytes then correct string result`() {
+    fun  `given ten kilobytes when formatted as megabytes then correct string result`() {
         val expected = "0.01Mb"
 
-        val result = (1L).formattedSize(
+        val result = (10L).formattedSize(
             sizeUnit = SizeUnit.KiloBytes,
             format = SizeFormat.Mb)
 
@@ -118,7 +118,7 @@ class LongTest {
 
     @Test
     fun  `given one megabyte when formatted as kilobytes then correct string result`() {
-        val expected = "1,024Kb"
+        val expected = "1,000Kb"
 
         val result = (1L).formattedSize(
             sizeUnit = SizeUnit.MegaBytes,
@@ -129,7 +129,7 @@ class LongTest {
 
     @Test
     fun  `given one megabyte when formatted as bytes then correct string result`() {
-        val expected = "1,048,576b"
+        val expected = "1,000,000b"
 
         val result = (1L).formattedSize(
             sizeUnit = SizeUnit.MegaBytes,
@@ -142,7 +142,7 @@ class LongTest {
     fun  `given one megabyte as bytes when formatted as megabytes then correct string result`() {
         val expected = "1.00Mb"
 
-        val result = (1_048_576L).formattedSize(
+        val result = (1_000_000L).formattedSize(
             sizeUnit = SizeUnit.Bytes,
             format = SizeFormat.Mb)
 
@@ -161,10 +161,10 @@ class LongTest {
     }
 
     @Test
-    fun  `given one megabyte when formatted as gigabytes then correct string result`() {
+    fun  `given ten megabytes when formatted as gigabytes then correct string result`() {
         val expected = "0.01Gb"
 
-        val result = (1L).formattedSize(
+        val result = (10L).formattedSize(
             sizeUnit = SizeUnit.MegaBytes,
             format = SizeFormat.Gb)
 
@@ -173,7 +173,7 @@ class LongTest {
 
     @Test
     fun  `given one gigabyte when formatted as kilobytes then correct string result`() {
-        val expected = "1,048,576Kb"
+        val expected = "1,000,000Kb"
 
         val result = (1L).formattedSize(
             sizeUnit = SizeUnit.GigaBytes,
@@ -184,7 +184,7 @@ class LongTest {
 
     @Test
     fun  `given one gigabyte when formatted as megabytes then correct string result`() {
-        val expected = "1,024.00Mb"
+        val expected = "1,000.00Mb"
 
         val result = (1L).formattedSize(
             sizeUnit = SizeUnit.GigaBytes,
