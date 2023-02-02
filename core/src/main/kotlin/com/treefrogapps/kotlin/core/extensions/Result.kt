@@ -1,5 +1,7 @@
 package com.treefrogapps.kotlin.core.extensions
 
+import java.util.concurrent.CancellationException
+
 inline fun <T> Result<T>.onComplete(action: () -> Unit): Result<T> {
     action()
     return this
@@ -31,4 +33,14 @@ inline fun <R> runCatchable(
         } else throw e
     }
 
+inline fun <R> runSuspendCatching(
+    block: () -> R
+): Result<R> =
+    try {
+        Result.success(block())
+    } catch (e: Throwable) {
+        if (e is CancellationException) {
+            throw e
+        } else Result.failure(e)
+    }
 
