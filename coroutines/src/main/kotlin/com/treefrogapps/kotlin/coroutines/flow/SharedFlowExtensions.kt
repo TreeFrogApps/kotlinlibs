@@ -7,10 +7,17 @@ import kotlinx.coroutines.flow.SharingStarted.Companion.Lazily
 import kotlinx.coroutines.launch
 
 
-fun <T> Flow<T>.asSharedFlow(scope: CoroutineScope, started: SharingStarted = Lazily, replay: Int = 1): SharedFlow<T> =
+fun <T> Flow<T>.asSharedFlow(
+    scope: CoroutineScope,
+    started: SharingStarted = Lazily,
+    replay: Int = 1
+): SharedFlow<T> =
     this.shareIn(scope, started, replay)
 
-fun <T> MutableSharedFlow<T>.send(scope: CoroutineScope, value: T) {
+fun <T> MutableSharedFlow<T>.send(
+    scope: CoroutineScope,
+    value: T
+) {
     scope.launch { emit(value) }
 }
 

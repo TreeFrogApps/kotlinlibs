@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 
 fun <T> Flow<T>.asStateFlow(
     scope: CoroutineScope,
-    started: SharingStarted = WhileSubscribed(stopTimeoutMillis = 5_000),
+    started: SharingStarted = WhileSubscribed(stopTimeoutMillis = 2_000),
     initialValue: T
 ): StateFlow<T> =
     stateIn(
@@ -17,7 +17,7 @@ fun <T> Flow<T>.asStateFlow(
 
 fun <T> Flow<T>.stateInWhileSubscribed(
     scope: CoroutineScope,
-    stopTimeoutMillis : Long = 5_000,
+    stopTimeoutMillis : Long = 2_000,
     initialValue: T
 ): StateFlow<T> =
     stateIn(
