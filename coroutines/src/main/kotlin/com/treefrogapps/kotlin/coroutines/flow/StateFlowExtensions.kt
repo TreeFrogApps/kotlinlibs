@@ -41,4 +41,4 @@ fun <T> MutableStateFlow<T?>.setToNull() {
 
 fun <T> nullableMutableStateFlowOf(t: T? = null): MutableStateFlow<T?> = MutableStateFlow(t)
 
-fun <T> mutableStateFlowOf(t: T): MutableStateFlow<T> = MutableStateFlow(t)
+fun <T : Any> mutableStateFlowOf(t: T): MutableStateFlow<T> = MutableStateFlow(t)
