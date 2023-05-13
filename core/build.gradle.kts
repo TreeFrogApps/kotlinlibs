@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
 group = "com.treefrogapps.kotlin.core"
 project.extra["name"] = "core"
-version = "1.16.0"
+version = "1.17.0"
 
 dependencies {
     // Kotlin
