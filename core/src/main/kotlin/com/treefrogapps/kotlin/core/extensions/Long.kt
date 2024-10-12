@@ -41,14 +41,14 @@ enum class SizeUnit {
     GigaBytes;
 
     companion object {
-        private const val SIScale: Long = 1000L
+        private const val SI_SCALE: Long = 1000L
 
         fun SizeUnit.toBytes(size: Long): Long =
             when (this) {
                 Bytes     -> size
-                KiloBytes -> size * SIScale
-                MegaBytes -> size * SIScale * SIScale
-                GigaBytes -> size * SIScale * SIScale * SIScale
+                KiloBytes -> size * SI_SCALE
+                MegaBytes -> size * SI_SCALE * SI_SCALE
+                GigaBytes -> size * SI_SCALE * SI_SCALE * SI_SCALE
             }
     }
 }

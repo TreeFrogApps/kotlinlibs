@@ -1,36 +1,17 @@
 import org.gradle.api.tasks.testing.logging.TestLogEvent.*
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "2.0.0" apply false
+    alias(libs.plugins.kotlin.jvm) apply false
     `maven-publish`
     `java-library`
 }
 
-allprojects {
-
-    repositories {
-        mavenCentral()
-        mavenLocal()
-    }
-}
-
 subprojects {
 
-    apply(plugin = "org.jetbrains.kotlin.jvm")
-    apply(plugin = "maven-publish")
-
-    repositories {
-        mavenCentral()
-        maven {
-            name = "GitHubPackages"
-            url = uri(project.findProperty("gpr_url_kotlin_libs") as String)
-            credentials {
-                username = project.findProperty("gpr_user") as String
-                password = project.findProperty("gpr_public_key") as String
-            }
-        }
-    }
+    apply(plugin = rootProject.libs.plugins.kotlin.jvm.get().pluginId)
+    apply<MavenPublishPlugin>()
 
     java {
         withJavadocJar()
@@ -50,24 +31,22 @@ subprojects {
         }
 
         publications {
-            register("gprRelease", MavenPublication::class) {
+            register(name = "gprRelease", type = MavenPublication::class) {
                 from(components["java"])
             }
         }
     }
 
-    val javaVersion = "1.8"
-
-    tasks.withType<KotlinCompile> {
-        kotlinOptions { jvmTarget = javaVersion }
-    }
-
-    tasks.withType<JavaCompile> {
-        sourceCompatibility = javaVersion
-        targetCompatibility = javaVersion
-    }
-
-    tasks.withType<Test> {
-        testLogging { events = mutableSetOf(PASSED, SKIPPED, FAILED) }
+    tasks {
+        withType<KotlinCompile> {
+            compilerOptions { jvmTarget.set(JvmTarget.JVM_1_8) }
+        }
+        withType<JavaCompile> {
+            sourceCompatibility = JavaVersion.VERSION_1_8.toString()
+            targetCompatibility = JavaVersion.VERSION_1_8.toString()
+        }
+        withType<Test> {
+            testLogging { events = mutableSetOf(PASSED, SKIPPED, FAILED) }
+        }
     }
 }

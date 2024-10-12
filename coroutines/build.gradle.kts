@@ -1,16 +1,14 @@
-import org.jetbrains.kotlin.config.KotlinCompilerVersion
-
 group = "com.treefrogapps.kotlin.coroutines"
 project.extra["name"] = "coroutines"
 version = "2.5.3"
 
 dependencies {
     // Kotlin
-    implementation(kotlin("stdlib", KotlinCompilerVersion.VERSION))
+    implementation(libs.kotlin.stdlib)
 
     // Kotlin Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+    implementation(libs.kotlinx.coroutines.core)
 
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
 }
