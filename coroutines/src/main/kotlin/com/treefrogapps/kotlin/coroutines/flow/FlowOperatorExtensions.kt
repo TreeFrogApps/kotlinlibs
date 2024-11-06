@@ -2,12 +2,11 @@ package com.treefrogapps.kotlin.coroutines.flow
 
 import kotlinx.coroutines.flow.*
 
-
 fun <T> Flow<T>.first(): Flow<T> = take(count = 1)
 
 suspend fun <T> Flow<T>.firstValue(): T = first { true }
 
-fun <T> Flow<T>.mapToUnit(): Flow<Unit> = map {  }
+fun <T> Flow<T>.mapToUnit(): Flow<Unit> = map { }
 
 fun <T> Flow<Collection<T>>.mapToFirst(): Flow<T> =
     filter(Collection<T>::isNotEmpty)
@@ -23,7 +22,8 @@ inline fun <T, R> Flow<Result<T>>.mapResult(
     crossinline onFailure: suspend (Throwable) -> R
 ): Flow<R> = mapResult(
     onSuccess = onSuccess,
-    onFailure = onFailure)
+    onFailure = onFailure
+)
     .onStart { emit(onStart()) }
 
 inline fun <T, R> Flow<Result<T>>.mapResult(
@@ -32,7 +32,7 @@ inline fun <T, R> Flow<Result<T>>.mapResult(
 ): Flow<R> = map { result ->
     when {
         result.isSuccess -> onSuccess(result.getOrNull()!!)
-        else             -> onFailure(result.exceptionOrNull()!!)
+        else -> onFailure(result.exceptionOrNull()!!)
     }
 }
 
@@ -239,3 +239,8 @@ inline fun <T1, T2, reified T3, R> combine(
 ): Flow<R> =
     combine(flow, flow2, combine(flow3) { it })
     { t1, t2, t3 -> transform(t1, t2, t3) }
+
+fun <T> Flow<T>.distinct(): Flow<T> {
+    val elements = mutableSetOf<T>()
+    return filter { element -> elements.add(element = element) }
+}
