@@ -1,6 +1,7 @@
 package com.treefrogapps.kotlin.coroutines.flow
 
 import kotlinx.coroutines.flow.*
+import kotlin.time.*
 
 fun <T> Flow<T>.first(): Flow<T> = take(count = 1)
 
@@ -35,6 +36,29 @@ inline fun <T, R> Flow<Result<T>>.mapResult(
         else -> onFailure(result.exceptionOrNull()!!)
     }
 }
+
+fun <T> Flow<T>.throttle(
+    timeoutMillis: Long,
+    timeSource: TimeSource = TimeSource.Monotonic
+): Flow<T> =
+    flow {
+        var nextMarkedTime = timeSource.markNow()
+        var hasEmitted = false
+        suspend fun emitAndMarkNextTime(value: T) {
+            emit(value)
+            nextMarkedTime = timeSource.markNow().plus(duration = timeoutMillis.toDuration(unit = DurationUnit.MILLISECONDS))
+        }
+        collect { value ->
+            if (hasEmitted) {
+                if (nextMarkedTime.hasPassedNow()) {
+                    emitAndMarkNextTime(value = value)
+                }
+            } else {
+                hasEmitted = true
+                emitAndMarkNextTime(value = value)
+            }
+        }
+    }
 
 inline fun <T> Flow<T>.firstIf(
     crossinline block: suspend (T) -> Boolean

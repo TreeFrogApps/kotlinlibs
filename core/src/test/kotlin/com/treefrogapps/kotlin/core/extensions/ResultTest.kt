@@ -1,12 +1,11 @@
 package com.treefrogapps.kotlin.core.extensions
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Test
 import java.io.IOException
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class ResultTest {
-
 
     @Test
     fun `when result success onComplete called`() {
@@ -43,7 +42,8 @@ class ResultTest {
     fun `given non catchable exception list when runCatchable then exception not caught`() {
         val catchable = listOf(
             IOException::class.java,
-            IllegalStateException::class.java)
+            IllegalStateException::class.java
+        )
 
         runCatchable(catchable = catchable) {
             throw IllegalArgumentException()
