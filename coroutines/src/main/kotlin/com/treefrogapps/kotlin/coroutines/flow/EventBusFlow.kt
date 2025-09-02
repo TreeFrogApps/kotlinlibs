@@ -1,6 +1,7 @@
 package com.treefrogapps.kotlin.coroutines.flow
 
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalForInheritanceCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -10,6 +11,7 @@ import kotlinx.coroutines.launch
  * Thin delegate class around a [MutableSharedFlow] that inherits from [SharedFlow].  Created for concrete use cases of
  * wanting to use an event bus / observer pattern
  */
+@OptIn(ExperimentalForInheritanceCoroutinesApi::class)
 class EventBusFlow<T> internal constructor(private val eventBus: MutableSharedFlow<T>) : SharedFlow<T> by eventBus {
 
     companion object {
