@@ -1,8 +1,8 @@
 [versions]
 
 # Library versions
-coroutines = "1.9.0"
-kotlin = "2.0.21"
+coroutines = "1.10.2"
+kotlin = "2.2.10"
 
 [libraries]
 
