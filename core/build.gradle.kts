@@ -1,6 +1,6 @@
 group = "com.treefrogapps.kotlin.core"
 project.extra["name"] = "core"
-version = "1.20.4"
+version = "1.20.5"
 
 
 dependencies {
